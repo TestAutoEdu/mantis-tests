@@ -1,49 +1,87 @@
 package marina.edu.test.model;
 
-import java.util.Objects;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import org.hibernate.annotations.Type;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@XStreamAlias("group")
+@Entity//Аннотация для Hybernate (работа с OQL)
+@Table(name = "group_list") //Аннотация для Hybernate (работа с OQL)
 public class GroupData {
-    private final String id;
-    private final String name;
-    private final String header;
-    private final String footer;
 
-    public GroupData(String name, String header, String footer) {
-        this.id = null;
-        this.name = name;
-        this.header = header;
-        this.footer = footer;
+    @Id//Аннотация для Hybernate (работа с OQL)
+    @Column(name = "group_id") //Аннотация для Hybernate (работа с OQL)
+    @Type(type = "int")
+    public static int id = Integer.MAX_VALUE;
+    @Column(name = "group_name") //Аннотация для Hybernate (работа с OQL)
+    public static String name;
+    @Column(name = "group_header") //Аннотация для Hybernate (работа с OQL)
+    public static String header;
+    @Column(name = "group_footer") //Аннотация для Hybernate (работа с OQL)
+    public static String footer;
+
+    public GroupData(int id, String groupNameModificated, String groupHeaderModificated, String groupFooterModificated) {
     }
 
-    public GroupData(String id, String name, String header, String footer) {
-        this.id = id;
-        this.name = name;
-        this.header = header;
-        this.footer = footer;
+    public GroupData(int id, String Name) {
     }
 
-    public String getId() {
+    public GroupData(String test2, Object o, Object o1) {
+    }
+
+    public void setId(int id) {
+        GroupData.id = id;
+    }
+
+
+    public int getId() {
         return id;
     }
 
-    public String getName() {
+    public static String getName() {
         return name;
     }
 
-    public String getHeader() {
+    public static String getHeader() {
         return header;
     }
 
-    public String getFooter() {
+    public static String getFooter() {
         return footer;
+    }
+
+    public static void setFooter(String footer) {
+        GroupData.footer = footer;
+    }
+
+    public static void setName(String name) {
+        GroupData.name = name;
+    }
+
+    public static void setHeader(String header) {
+        GroupData.header = header;
     }
 
     @Override
     public String toString() {
+
         return "GroupData{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+
+    @Override
+
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -51,13 +89,13 @@ public class GroupData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GroupData groupData = (GroupData) o;
-        return Objects.equals(id, groupData.id) &&
-                Objects.equals(name, groupData.name);
+        if (id != groupData.id) return false;
+        return name != null ? name.equals(groupData.name) : groupData.name == null;
     }
 
-    @Override
-    public int hashCode() {
 
-        return Objects.hash(id, name);
+    public static class getId {
+        public getId(int group_id) {
+        }
     }
 }

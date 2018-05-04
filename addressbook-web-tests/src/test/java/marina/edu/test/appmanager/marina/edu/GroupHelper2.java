@@ -1,11 +1,14 @@
 package marina.edu.test.appmanager.marina.edu;
 
 import marina.edu.test.model.GroupData;
+import marina.edu.test.model.Groups;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GroupHelper2 {
 
@@ -26,11 +29,11 @@ public class GroupHelper2 {
     public static void formFilling() {
         ApplicationManager2.driver.findElement(By.xpath("(//input[@name='new'])[2]")).click();
         ApplicationManager2.driver.findElement(By.name("group_name")).click();
-        ApplicationManager2.driver.findElement(By.name("group_name")).sendKeys("GroupName");
+        ApplicationManager2.driver.findElement(By.name("group_name")).sendKeys("NameKakashka");
         ApplicationManager2.driver.findElement(By.name("group_header")).click();
-        ApplicationManager2.driver.findElement(By.name("group_header")).sendKeys("GroupHeader");
+        ApplicationManager2.driver.findElement(By.name("group_header")).sendKeys("Header");
         ApplicationManager2.driver.findElement(By.name("group_footer")).click();
-        ApplicationManager2.driver.findElement(By.name("group_footer")).sendKeys("GroupFooter");
+        ApplicationManager2.driver.findElement(By.name("group_footer")).sendKeys("Footer");
         ApplicationManager2.driver.findElement(By.name("submit")).click();
     }
 
@@ -63,14 +66,49 @@ public class GroupHelper2 {
             List<WebElement> elements = ApplicationManager2.driver.findElements(By.cssSelector("span.group"));
             for (WebElement element : elements) {
                 String name = element.getText();
-                String id = element.findElement(By.tagName("input")).getAttribute("value");
+                int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
                 GroupData group = new GroupData(id, name, null, null);
                 groups.add(group);
             }
             return groups;
 
         }
+    public static GroupData modifyGroup(List<GroupData> before, int index) {
+        GroupHelper2.selectGroup("(//input[@name='selected[]'])[last()]");
+        GroupData group = new GroupData(before.get(index).getId(), "GroupNameModificated", "GroupHeaderModificated", "GroupFooterModificated");
+        GroupHelper2.editGroup(group);
+        GroupHelper2.goToGroupPage("groups");
+        GroupHelper2.getGroupList();
+        return group;
+    }
+    public static void returnToGroupPage() {
+        ApplicationManager2.driver.findElement(By.linkText("group page")).click();
+    }
+
+  /**  private Groups groupCache = null;
+    if (groupCache != null) {
+        return new Groups(groupCache);
 
     }
+    groupCache = new Groups(); **/
+
+    public static Set<GroupData> all () {
+        Set<GroupData> groups = new HashSet<GroupData>();//Реализация множества
+        List<WebElement> elements = ApplicationManager2.driver.findElements(By.cssSelector("span.group"));
+        for (WebElement element : elements) {
+            String name = element.getText();
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("value"));
+            GroupData group = new GroupData(id, name, null, null);
+            groups.add(group);
+        }
+        return groups;
+
+
+    }
+    public static void goToHomepage() {
+        ApplicationManager2.driver.get("http://localhost/addressbook/");
+    }
+
+}
 
 
